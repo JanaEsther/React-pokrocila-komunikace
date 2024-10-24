@@ -1,21 +1,22 @@
+import { useState } from 'react';
 import { SwitchButton } from './SwitchButton';
 import './style.css';
 
 /*
-  Zadání: V tomto úkolu začneme zjednodušnou komunikací mezi komponentami. 
+  Zadání: V tomto úkolu začneme zjednodušnou komunikací mezi komponentami.
 
-  Krok 1: Založte stav, který bude udávat jestli je žárovka zapnutá nebo vypnutá, například 
+  Krok 1: Založte stav, který bude udávat jestli je žárovka zapnutá nebo vypnutá, například
     `bulbOn` a `setBulbOn`. Podle stavu nastavte třídu `bulb--on` na žárovku.
 
-  Krok 2: Přidejte komponentě `SwitchButton` novou prop `onSwitch`, která bude očekávat funkci, 
+  Krok 2: Přidejte komponentě `SwitchButton` novou prop `onSwitch`, která bude očekávat funkci,
     která se zavolá při kliknutí na tlačítko a bude měnit stav žárovky. `onSwitch` se nebude
     volat s žádným parametrem. Do `onSwitch` tedy nepůjde předat přímo nastavovací funkci stavu –
     budete si muset vytvořit vlastní funkci, která při každém zavolání přepne stav na opačnou hodnotu.
     Vyzkoušejte, že jde pomocí vypínače žárovku zapnout a vypnout.
 
-  Krok 3: Vypínač má taky svou ikonku. Přidejte tedy do komponenty `SwitchButton` prop `on`, 
-    která bude udávat jestli je vypínač zapnutý nebo vypnutý. Podle toho nastavte třídu 
-    `switch-button--on` na tlačitku. Stav `bulbOn` použijte k nastavení ikonky vypínače a 
+  Krok 3: Vypínač má taky svou ikonku. Přidejte tedy do komponenty `SwitchButton` prop `on`,
+    která bude udávat jestli je vypínač zapnutý nebo vypnutý. Podle toho nastavte třídu
+    `switch-button--on` na tlačitku. Stav `bulbOn` použijte k nastavení ikonky vypínače a
     jeho textu, takže když je žárovka zapnutá, tak je vypínač zapnutý a bude hlásit "Vypnout" 
     a naopak.
 
@@ -30,10 +31,28 @@ import './style.css';
 */
 
 export const Ukol1 = () => {
+  const [bulbOn, setBulbOn] = useState(false);
+
+  const handleSwitch = (shouldBeOn) => {
+    if (shouldBeOn) {
+      if (window.confirm('Opravdu chcete rozsvítit?')) {
+        setBulbOn(true);
+      } else {
+        setBulbOn(false);
+      }
+    } else {
+      setBulbOn(!bulbOn);
+    }
+  };
+
   return (
     <>
-      <div className="bulb bulb--on" />
-      <SwitchButton label="Vypnout" />
+      <div className={bulbOn ? 'bulb bulb--on' : 'bulb'} />
+      <SwitchButton
+        label={bulbOn ? 'Vypnout' : ' Zapnout'}
+        onSwitch={() => handleSwitch(!bulbOn)}
+        on={bulbOn}
+      />
     </>
   );
 };
